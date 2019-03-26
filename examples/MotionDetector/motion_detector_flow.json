@@ -1,0 +1,487 @@
+[
+    {
+        "id": "f25f5cc9.90b5a",
+        "type": "tab",
+        "label": "Flow 1"
+    },
+    {
+        "id": "792c5daa.957d34",
+        "type": "mqtt-broker",
+        "z": "",
+        "broker": "edgex_mqtt_broker",
+        "port": "1883",
+        "tls": "d4e4a221.b409f",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
+    },
+    {
+        "id": "2bca2ba4.20f754",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "90786150.52ab3",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Tab 1",
+        "icon": "dashboard",
+        "order": 1
+    },
+    {
+        "id": "e85eb6c8.e243f8",
+        "type": "ui_group",
+        "z": "",
+        "name": "EdgeX RPi Example",
+        "tab": "90786150.52ab3",
+        "order": 1,
+        "disp": true,
+        "width": "12"
+    },
+    {
+        "id": "d4e4a221.b409f",
+        "type": "tls-config",
+        "z": "",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "verifyservercert": true
+    },
+    {
+        "id": "8d5ebd41.c2502",
+        "type": "mqtt in",
+        "z": "f25f5cc9.90b5a",
+        "name": "Motion State",
+        "topic": "ExampleRpiMotion",
+        "qos": "2",
+        "broker": "792c5daa.957d34",
+        "x": 130,
+        "y": 240,
+        "wires": [
+            [
+                "141cd9f7.fea3c6"
+            ]
+        ]
+    },
+    {
+        "id": "78e8855d.4b3ddc",
+        "type": "switch",
+        "z": "f25f5cc9.90b5a",
+        "name": "IsMotionDetected",
+        "property": "payload.readings[0].value",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 2,
+        "x": 570,
+        "y": 360,
+        "wires": [
+            [
+                "57bae6e.9a51e18"
+            ],
+            [
+                "4164f0ae.10afe"
+            ]
+        ]
+    },
+    {
+        "id": "4f9b3da6.db7774",
+        "type": "ui_chart",
+        "z": "f25f5cc9.90b5a",
+        "name": "Motion Activity",
+        "group": "e85eb6c8.e243f8",
+        "order": 1,
+        "width": "12",
+        "height": "6",
+        "label": "Motion Activity",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "step",
+        "nodata": "",
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "x": 800,
+        "y": 140,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "66b66bc2.6cf5a4",
+        "type": "ui_switch",
+        "z": "f25f5cc9.90b5a",
+        "name": "Red LED",
+        "label": "Red LED",
+        "group": "e85eb6c8.e243f8",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "x": 320,
+        "y": 600,
+        "wires": [
+            [
+                "2c27f38c.6bd2cc"
+            ]
+        ]
+    },
+    {
+        "id": "141cd9f7.fea3c6",
+        "type": "json",
+        "z": "f25f5cc9.90b5a",
+        "name": "",
+        "pretty": true,
+        "x": 330,
+        "y": 240,
+        "wires": [
+            [
+                "78e8855d.4b3ddc",
+                "2c30b391.30854c"
+            ]
+        ]
+    },
+    {
+        "id": "2c27f38c.6bd2cc",
+        "type": "switch",
+        "z": "f25f5cc9.90b5a",
+        "name": "LED State",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "true"
+            },
+            {
+                "t": "false"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 2,
+        "x": 530,
+        "y": 640,
+        "wires": [
+            [
+                "6bcb174c.b7e838"
+            ],
+            [
+                "577188de.7f82d8"
+            ]
+        ]
+    },
+    {
+        "id": "71c157b7.9879c8",
+        "type": "http request",
+        "z": "f25f5cc9.90b5a",
+        "name": "Set Green LED",
+        "method": "PUT",
+        "ret": "txt",
+        "url": "http://edgex-core-command:48082/api/v1/device/5c9a56639f8fc2000142622c/command/5c9a56629f8fc20001426226",
+        "tls": "",
+        "x": 1200,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "57bae6e.9a51e18",
+        "type": "function",
+        "z": "f25f5cc9.90b5a",
+        "name": "LED On",
+        "func": "var data = {}\ndata[\"Green-LED\"] = \"true\"\nmsg.payload = JSON.stringify (data);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 980,
+        "y": 340,
+        "wires": [
+            [
+                "71c157b7.9879c8",
+                "57d33662.befb48"
+            ]
+        ]
+    },
+    {
+        "id": "4164f0ae.10afe",
+        "type": "function",
+        "z": "f25f5cc9.90b5a",
+        "name": "LED Off",
+        "func": "var data = {}\ndata[\"Green-LED\"] = \"false\"\nmsg.payload = JSON.stringify (data);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 980,
+        "y": 480,
+        "wires": [
+            [
+                "71c157b7.9879c8",
+                "57d33662.befb48"
+            ]
+        ]
+    },
+    {
+        "id": "57d33662.befb48",
+        "type": "debug",
+        "z": "f25f5cc9.90b5a",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "false",
+        "x": 1210,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "2c30b391.30854c",
+        "type": "function",
+        "z": "f25f5cc9.90b5a",
+        "name": "Motion Data",
+        "func": "msg.payload = msg.payload.readings[0].value;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 550,
+        "y": 160,
+        "wires": [
+            [
+                "4f9b3da6.db7774",
+                "13b1f771.bd0289"
+            ]
+        ]
+    },
+    {
+        "id": "c1480d88.df2f4",
+        "type": "http request",
+        "z": "f25f5cc9.90b5a",
+        "name": "Set Red LED",
+        "method": "PUT",
+        "ret": "txt",
+        "url": "http://edgex-core-command:48082/api/v1/device/5c9a56639f8fc2000142622c/command/5c9a56629f8fc20001426227",
+        "tls": "",
+        "x": 990,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "577188de.7f82d8",
+        "type": "function",
+        "z": "f25f5cc9.90b5a",
+        "name": "LED Off",
+        "func": "var data = {}\ndata[\"Red-LED\"] = \"false\"\nmsg.payload = JSON.stringify (data);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 760,
+        "y": 800,
+        "wires": [
+            [
+                "c1480d88.df2f4"
+            ]
+        ]
+    },
+    {
+        "id": "6bcb174c.b7e838",
+        "type": "function",
+        "z": "f25f5cc9.90b5a",
+        "name": "LED On",
+        "func": "var data = {}\ndata[\"Red-LED\"] = \"true\"\nmsg.payload = JSON.stringify (data);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 780,
+        "y": 680,
+        "wires": [
+            [
+                "c1480d88.df2f4"
+            ]
+        ]
+    },
+    {
+        "id": "13b1f771.bd0289",
+        "type": "debug",
+        "z": "f25f5cc9.90b5a",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 750,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "cfc92d71.a9c48",
+        "type": "ui_button",
+        "z": "f25f5cc9.90b5a",
+        "name": "ClearGraph",
+        "group": "e85eb6c8.e243f8",
+        "order": 2,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "label": "Clear Graph",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "[]",
+        "payloadType": "json",
+        "topic": "",
+        "x": 573,
+        "y": 70,
+        "wires": [
+            [
+                "4f9b3da6.db7774",
+                "13b1f771.bd0289"
+            ]
+        ]
+    },
+    {
+        "id": "8184d863.d92cf8",
+        "type": "inject",
+        "z": "f25f5cc9.90b5a",
+        "name": "",
+        "topic": "",
+        "payload": "false",
+        "payloadType": "bool",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "x": 110,
+        "y": 580,
+        "wires": [
+            [
+                "66b66bc2.6cf5a4"
+            ]
+        ]
+    }
+]
