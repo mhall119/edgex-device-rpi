@@ -43,10 +43,10 @@
 
 
 [[DeviceList]]
-  Name = "RPiLEDs"
-  Profile = "Grove_LED"
-  Description = "Grove Device to Read/Write sensors connected to GrovePI"
-  Labels = [ "Grove LED" ]
+  Name = "RPiMotionDetector"
+  Profile = "RPi_Motion_Detector"
+  Description = "Motion detector using RPi's GPIO pins and a PIR sensor"
+  Labels = [ "RPi Example" ]
   [DeviceList.Addressable]
-    Address = "/api/v1/device/RPiDevice"
+    Address = "/api/v1/device/RPiMotionDevice"
 
