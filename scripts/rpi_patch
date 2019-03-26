@@ -1,0 +1,35 @@
+diff --git a/src/arm/arm.c b/src/arm/arm.c
+index 62d6b2e..73dc07a 100644
+--- a/src/arm/arm.c
++++ b/src/arm/arm.c
+@@ -104,6 +104,12 @@ mraa_arm_platform()
+             platform_type = MRAA_RASPBERRY_PI;
+     }
+ 
++    /* Forcing the platform type as dtb is not generated for arm64 */
++    if (platform_type == MRAA_UNKNOWN_PLATFORM)
++    {
++      platform_type = MRAA_RASPBERRY_PI;
++    }
++
+     switch (platform_type) {
+         case MRAA_RASPBERRY_PI:
+             plat = mraa_raspberry_pi();
+diff --git a/src/arm/raspberry_pi.c b/src/arm/raspberry_pi.c
+index 0a35166..c5627b3 100644
+--- a/src/arm/raspberry_pi.c
++++ b/src/arm/raspberry_pi.c
+@@ -578,6 +578,13 @@ mraa_raspberry_pi()
+             platform_detected = PLATFORM_RASPBERRY_PI3_B_PLUS;
+             b->phy_pin_count = MRAA_RASPBERRY_PI3_B_PLUS_PINCOUNT;
+         }
++        else
++        {
++            /* Forcing the platform type as dtb is not generated for arm64 */
++            b->platform_name = PLATFORM_NAME_RASPBERRY_PI3_B_PLUS;
++            platform_detected = PLATFORM_RASPBERRY_PI3_B_PLUS;
++            b->phy_pin_count = MRAA_RASPBERRY_PI3_B_PLUS_PINCOUNT;
++        }
+     }
+ 
+     b->aio_count = 0;

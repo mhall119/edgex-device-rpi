@@ -1,0 +1,52 @@
+[Service]
+  Host = "192.168.1.145"
+  Port = 49991
+  ConnectRetries = 3
+  HealthCheck = ""
+  StartupMsg = "device RPI started"
+  ReadMaxLimit = 256
+  Timeout = 5000
+
+[Clients]
+  [Clients.Data]
+    Host = "192.168.1.130"
+    Port = 48080
+
+  [Clients.Metadata]
+    Host = "192.168.1.130"
+    Port = 48081
+
+[Device]
+  DataTransform = true
+  Discovery = false
+  InitCmd = ""
+  InitCmdArgs = ""
+  MaxCmdOps = 128
+  MaxCmdResultLen = 256
+  RemoveCmd = ""
+  RemoveCmdArgs = ""
+  ProfilesDir = ""
+  SendReadingsOnChanged = true
+
+[Logging]
+  RemoteURL = ""
+  File = "-"
+
+[[Schedules]]
+  Name = "Schedule_Motion"
+  Frequency = "PT2S"
+
+[[ScheduleEvents]]
+  Name = "MotionStateMeasurements"
+  Schedule = "Schedule_Motion"
+  Path = "/api/v1/device/all/Get_MotionState"
+
+
+[[DeviceList]]
+  Name = "RPiLEDs"
+  Profile = "Grove_LED"
+  Description = "Grove Device to Read/Write sensors connected to GrovePI"
+  Labels = [ "Grove LED" ]
+  [DeviceList.Addressable]
+    Address = "/api/v1/device/RPiDevice"
+
