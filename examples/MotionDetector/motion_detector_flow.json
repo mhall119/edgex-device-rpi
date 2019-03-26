@@ -2,7 +2,9 @@
     {
         "id": "f25f5cc9.90b5a",
         "type": "tab",
-        "label": "Flow 1"
+        "label": "Motion Detector Example",
+        "disabled": false,
+        "info": ""
     },
     {
         "id": "792c5daa.957d34",
@@ -115,7 +117,7 @@
         "id": "90786150.52ab3",
         "type": "ui_tab",
         "z": "",
-        "name": "Tab 1",
+        "name": "EdgeX Raspberry Pi Device",
         "icon": "dashboard",
         "order": 1
     },
@@ -123,7 +125,7 @@
         "id": "e85eb6c8.e243f8",
         "type": "ui_group",
         "z": "",
-        "name": "EdgeX RPi Example",
+        "name": "Motion Detector Example",
         "tab": "90786150.52ab3",
         "order": 1,
         "disp": true,
@@ -432,7 +434,7 @@
         "type": "debug",
         "z": "f25f5cc9.90b5a",
         "name": "",
-        "active": true,
+        "active": false,
         "console": "false",
         "complete": "true",
         "x": 750,
@@ -456,12 +458,11 @@
         "payload": "[]",
         "payloadType": "json",
         "topic": "",
-        "x": 573,
-        "y": 70,
+        "x": 430,
+        "y": 60,
         "wires": [
             [
-                "4f9b3da6.db7774",
-                "13b1f771.bd0289"
+                "4f9b3da6.db7774"
             ]
         ]
     },
