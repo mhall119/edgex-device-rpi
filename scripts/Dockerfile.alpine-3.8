@@ -1,20 +1,20 @@
 FROM alpine:3.8 as builder
-MAINTAINER Bindu Rao <bindu@iotechsys.com>
+MAINTAINER Michael Hall <mhall@gmail.com>
 RUN apk add --update --no-cache build-base git gcc cmake make linux-headers yaml-dev libmicrohttpd-dev curl-dev
 
-COPY scripts /device-grove/scripts
-COPY src /device-grove/src/
-RUN mkdir -p /device-grove/build
+COPY scripts /device-rpi/scripts
+COPY src /device-rpi/src/
+RUN mkdir -p /device-rpi/build
 
-WORKDIR /device-grove
-RUN /device-grove/scripts/build_deps.sh
-RUN /device-grove/scripts/build.sh
+WORKDIR /device-rpi
+RUN /device-rpi/scripts/build_deps.sh
+RUN /device-rpi/scripts/build.sh
 
 FROM alpine:3.8
 
 RUN apk add --update --no-cache linux-headers yaml libmicrohttpd curl-dev
 
-COPY --from=builder /device-grove/build/release/device-grove /device-grove/build/release/
+COPY --from=builder /device-rpi/build/release/device-rpi /device-rpi/build/release/
 COPY --from=builder /usr/lib/libcsdk.so /usr/lib
 COPY --from=builder /usr/include/edgex /usr/include/edgex
 COPY --from=builder /usr/include/thpool.h /usr/include/thpool.h
@@ -23,11 +23,9 @@ COPY --from=builder /usr/local/include/mraa /usr/local/include/
 COPY --from=builder /usr/local/include/mraa.h /usr/local/include/
 COPY --from=builder /usr/local/lib/libmraa.so* /usr/local/lib/
 
-COPY VERSION /device-grove/
-COPY LICENSE /device-grove/
-COPY Attribution.txt /device-grove/
-COPY res /device-grove/res/
-COPY profiles /device-grove/profiles
+COPY LICENSE /device-rpi/
+COPY res /device-rpi/res/
+COPY examples /device-rpi/examples
 
-ENTRYPOINT ["/device-grove/build/release/device-grove", "-c"]
-CMD ["/device-grove/res/"]
+ENTRYPOINT ["/device-rpi/build/release/device-rpi", "-c"]
+CMD ["/device-rpi/res/"]

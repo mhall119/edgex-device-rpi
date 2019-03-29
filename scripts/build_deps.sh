@@ -4,11 +4,13 @@ set -e -x
 # Dependencies
 if [ ! -d deps ]
 then
-  basedir=`pwd`
+  ROOT=$(dirname $(dirname $(readlink -f $0)))
+  echo $ROOT
+  cd $ROOT
 
   mkdir deps
 
-  cd $basedir/deps
+  cd $ROOT/deps
 
   git clone https://github.com/intel-iot-devkit/mraa.git
   cd mraa
@@ -16,7 +18,7 @@ then
   git reset --hard d320776
 
 # patch for raspberryPI
-  patch -p1 < $basedir/scripts/rpi_patch
+  patch -p1 < $ROOT/scripts/rpi_patch
 
   mkdir -p build && cd build
 
@@ -25,7 +27,7 @@ then
   make && make install
 
 # get c-sdk from edgexfoundry
-  cd $basedir/deps
+  cd $ROOT/deps
   wget https://github.com/edgexfoundry/device-sdk-c/archive/0.7.1.tar.gz
   tar -xzf 0.7.1.tar.gz
   cd device-sdk-c-0.7.1

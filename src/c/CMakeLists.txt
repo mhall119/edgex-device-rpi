@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(device_grove LANGUAGES C)
+project(device_rpi LANGUAGES C)
 
 # Package support
 set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
@@ -30,6 +30,6 @@ endif ()
 file (GLOB C_FILES *.c)
 find_library(EDGEX_CSDK_RELEASE_LIB NAMES csdk)
 find_library(LIBMRAA_LIB NAMES mraa)
-add_executable(device-grove ${C_FILES})
-target_include_directories (device-grove PRIVATE .)
-target_link_libraries (device-grove PUBLIC m PRIVATE ${LIBMRAA_LIB} ${EDGEX_CSDK_RELEASE_LIB})
+add_executable(device-rpi ${C_FILES})
+target_include_directories (device-rpi PRIVATE .)
+target_link_libraries (device-rpi PUBLIC m PRIVATE ${LIBMRAA_LIB} ${EDGEX_CSDK_RELEASE_LIB})
