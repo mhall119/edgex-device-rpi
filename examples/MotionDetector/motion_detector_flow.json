@@ -1,169 +1,31 @@
 [
     {
-        "id": "f25f5cc9.90b5a",
+        "id": "9b837477.57dac8",
         "type": "tab",
         "label": "Motion Detector Example",
         "disabled": false,
         "info": ""
     },
     {
-        "id": "792c5daa.957d34",
-        "type": "mqtt-broker",
-        "z": "",
-        "broker": "edgex_mqtt_broker",
-        "port": "1883",
-        "tls": "d4e4a221.b409f",
-        "clientid": "",
-        "usetls": false,
-        "compatmode": true,
-        "keepalive": "60",
-        "cleansession": true,
-        "willTopic": "",
-        "willQos": "0",
-        "willPayload": "",
-        "birthTopic": "",
-        "birthQos": "0",
-        "birthPayload": ""
-    },
-    {
-        "id": "2bca2ba4.20f754",
-        "type": "ui_base",
-        "theme": {
-            "name": "theme-light",
-            "lightTheme": {
-                "default": "#0094CE",
-                "baseColor": "#0094CE",
-                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
-                "edited": true,
-                "reset": false
-            },
-            "darkTheme": {
-                "default": "#097479",
-                "baseColor": "#097479",
-                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
-                "edited": false
-            },
-            "customTheme": {
-                "name": "Untitled Theme 1",
-                "default": "#4B7930",
-                "baseColor": "#4B7930",
-                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
-            },
-            "themeState": {
-                "base-color": {
-                    "default": "#0094CE",
-                    "value": "#0094CE",
-                    "edited": false
-                },
-                "page-titlebar-backgroundColor": {
-                    "value": "#0094CE",
-                    "edited": false
-                },
-                "page-backgroundColor": {
-                    "value": "#fafafa",
-                    "edited": false
-                },
-                "page-sidebar-backgroundColor": {
-                    "value": "#ffffff",
-                    "edited": false
-                },
-                "group-textColor": {
-                    "value": "#1bbfff",
-                    "edited": false
-                },
-                "group-borderColor": {
-                    "value": "#ffffff",
-                    "edited": false
-                },
-                "group-backgroundColor": {
-                    "value": "#ffffff",
-                    "edited": false
-                },
-                "widget-textColor": {
-                    "value": "#111111",
-                    "edited": false
-                },
-                "widget-backgroundColor": {
-                    "value": "#0094ce",
-                    "edited": false
-                },
-                "widget-borderColor": {
-                    "value": "#ffffff",
-                    "edited": false
-                },
-                "base-font": {
-                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
-                }
-            }
-        },
-        "site": {
-            "name": "Node-RED Dashboard",
-            "hideToolbar": "false",
-            "allowSwipe": "false",
-            "dateFormat": "DD/MM/YYYY",
-            "sizes": {
-                "sx": 48,
-                "sy": 48,
-                "gx": 6,
-                "gy": 6,
-                "cx": 6,
-                "cy": 6,
-                "px": 0,
-                "py": 0
-            }
-        }
-    },
-    {
-        "id": "90786150.52ab3",
-        "type": "ui_tab",
-        "z": "",
-        "name": "EdgeX Raspberry Pi Device",
-        "icon": "dashboard",
-        "order": 1
-    },
-    {
-        "id": "e85eb6c8.e243f8",
-        "type": "ui_group",
-        "z": "",
-        "name": "Motion Detector Example",
-        "tab": "90786150.52ab3",
-        "order": 1,
-        "disp": true,
-        "width": "12"
-    },
-    {
-        "id": "d4e4a221.b409f",
-        "type": "tls-config",
-        "z": "",
-        "name": "",
-        "cert": "",
-        "key": "",
-        "ca": "",
-        "certname": "",
-        "keyname": "",
-        "caname": "",
-        "verifyservercert": true
-    },
-    {
-        "id": "8d5ebd41.c2502",
+        "id": "269fde59.27bf32",
         "type": "mqtt in",
-        "z": "f25f5cc9.90b5a",
+        "z": "9b837477.57dac8",
         "name": "Motion State",
         "topic": "ExampleRpiMotion",
         "qos": "2",
-        "broker": "792c5daa.957d34",
+        "broker": "4b13cec6.bca34",
         "x": 130,
         "y": 240,
         "wires": [
             [
-                "141cd9f7.fea3c6"
+                "52e8a367.17d2dc"
             ]
         ]
     },
     {
-        "id": "78e8855d.4b3ddc",
+        "id": "1c001351.23544d",
         "type": "switch",
-        "z": "f25f5cc9.90b5a",
+        "z": "9b837477.57dac8",
         "name": "IsMotionDetected",
         "property": "payload.readings[0].value",
         "propertyType": "msg",
@@ -185,19 +47,19 @@
         "y": 360,
         "wires": [
             [
-                "57bae6e.9a51e18"
+                "372a3cab.424974"
             ],
             [
-                "4164f0ae.10afe"
+                "774c6af2.d15594"
             ]
         ]
     },
     {
-        "id": "4f9b3da6.db7774",
+        "id": "e2cb87b0.c5e458",
         "type": "ui_chart",
-        "z": "f25f5cc9.90b5a",
+        "z": "9b837477.57dac8",
         "name": "Motion Activity",
-        "group": "e85eb6c8.e243f8",
+        "group": "9838c993.493de8",
         "order": 1,
         "width": "12",
         "height": "6",
@@ -232,12 +94,12 @@
         ]
     },
     {
-        "id": "66b66bc2.6cf5a4",
+        "id": "31609fc.b8ae76",
         "type": "ui_switch",
-        "z": "f25f5cc9.90b5a",
+        "z": "9b837477.57dac8",
         "name": "Red LED",
         "label": "Red LED",
-        "group": "e85eb6c8.e243f8",
+        "group": "9838c993.493de8",
         "order": 3,
         "width": 0,
         "height": 0,
@@ -257,29 +119,29 @@
         "y": 600,
         "wires": [
             [
-                "2c27f38c.6bd2cc"
+                "5b54b415.f9180c"
             ]
         ]
     },
     {
-        "id": "141cd9f7.fea3c6",
+        "id": "52e8a367.17d2dc",
         "type": "json",
-        "z": "f25f5cc9.90b5a",
+        "z": "9b837477.57dac8",
         "name": "",
         "pretty": true,
         "x": 330,
         "y": 240,
         "wires": [
             [
-                "78e8855d.4b3ddc",
-                "2c30b391.30854c"
+                "1c001351.23544d",
+                "a169436a.1270f"
             ]
         ]
     },
     {
-        "id": "2c27f38c.6bd2cc",
+        "id": "5b54b415.f9180c",
         "type": "switch",
-        "z": "f25f5cc9.90b5a",
+        "z": "9b837477.57dac8",
         "name": "LED State",
         "property": "payload",
         "propertyType": "msg",
@@ -297,21 +159,21 @@
         "y": 640,
         "wires": [
             [
-                "6bcb174c.b7e838"
+                "2918d654.c8b1ca"
             ],
             [
-                "577188de.7f82d8"
+                "c14d5143.5133a"
             ]
         ]
     },
     {
-        "id": "71c157b7.9879c8",
+        "id": "39420062.c2e5b",
         "type": "http request",
-        "z": "f25f5cc9.90b5a",
+        "z": "9b837477.57dac8",
         "name": "Set Green LED",
         "method": "PUT",
         "ret": "txt",
-        "url": "http://edgex-core-command:48082/api/v1/device/5c9a56639f8fc2000142622c/command/5c9a56629f8fc20001426226",
+        "url": "http://edgex-core-command:48082/api/v1/device/5c9e91a09f8fc20001c8570e/command/5c9e91a09f8fc20001c85709",
         "tls": "",
         "x": 1200,
         "y": 400,
@@ -320,55 +182,55 @@
         ]
     },
     {
-        "id": "57bae6e.9a51e18",
+        "id": "372a3cab.424974",
         "type": "function",
-        "z": "f25f5cc9.90b5a",
+        "z": "9b837477.57dac8",
         "name": "LED On",
-        "func": "var data = {}\ndata[\"Green-LED\"] = \"true\"\nmsg.payload = JSON.stringify (data);\nreturn msg;",
+        "func": "var data = {}\ndata[\"Green_LED\"] = \"true\"\nmsg.payload = JSON.stringify (data);\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "x": 980,
         "y": 340,
         "wires": [
             [
-                "71c157b7.9879c8",
-                "57d33662.befb48"
+                "39420062.c2e5b",
+                "62fcce45.d2739"
             ]
         ]
     },
     {
-        "id": "4164f0ae.10afe",
+        "id": "774c6af2.d15594",
         "type": "function",
-        "z": "f25f5cc9.90b5a",
+        "z": "9b837477.57dac8",
         "name": "LED Off",
-        "func": "var data = {}\ndata[\"Green-LED\"] = \"false\"\nmsg.payload = JSON.stringify (data);\nreturn msg;",
+        "func": "var data = {}\ndata[\"Green_LED\"] = \"false\"\nmsg.payload = JSON.stringify (data);\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "x": 980,
         "y": 480,
         "wires": [
             [
-                "71c157b7.9879c8",
-                "57d33662.befb48"
+                "39420062.c2e5b",
+                "62fcce45.d2739"
             ]
         ]
     },
     {
-        "id": "57d33662.befb48",
+        "id": "62fcce45.d2739",
         "type": "debug",
-        "z": "f25f5cc9.90b5a",
+        "z": "9b837477.57dac8",
         "name": "",
-        "active": false,
+        "active": true,
         "console": "false",
         "complete": "false",
-        "x": 1210,
-        "y": 540,
+        "x": 1190,
+        "y": 520,
         "wires": []
     },
     {
-        "id": "2c30b391.30854c",
+        "id": "a169436a.1270f",
         "type": "function",
-        "z": "f25f5cc9.90b5a",
+        "z": "9b837477.57dac8",
         "name": "Motion Data",
         "func": "msg.payload = msg.payload.readings[0].value;\nreturn msg;",
         "outputs": 1,
@@ -377,19 +239,19 @@
         "y": 160,
         "wires": [
             [
-                "4f9b3da6.db7774",
-                "13b1f771.bd0289"
+                "e2cb87b0.c5e458",
+                "8aedc0c5.e57a2"
             ]
         ]
     },
     {
-        "id": "c1480d88.df2f4",
+        "id": "c1ad6204.af703",
         "type": "http request",
-        "z": "f25f5cc9.90b5a",
+        "z": "9b837477.57dac8",
         "name": "Set Red LED",
         "method": "PUT",
         "ret": "txt",
-        "url": "http://edgex-core-command:48082/api/v1/device/5c9a56639f8fc2000142622c/command/5c9a56629f8fc20001426227",
+        "url": "http://edgex-core-command:48082/api/v1/device/5c9e91a09f8fc20001c8570e/command/5c9e91a09f8fc20001c8570a",
         "tls": "",
         "x": 990,
         "y": 760,
@@ -398,41 +260,41 @@
         ]
     },
     {
-        "id": "577188de.7f82d8",
+        "id": "c14d5143.5133a",
         "type": "function",
-        "z": "f25f5cc9.90b5a",
+        "z": "9b837477.57dac8",
         "name": "LED Off",
-        "func": "var data = {}\ndata[\"Red-LED\"] = \"false\"\nmsg.payload = JSON.stringify (data);\nreturn msg;",
+        "func": "var data = {}\ndata[\"Red_LED\"] = \"false\"\nmsg.payload = JSON.stringify (data);\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "x": 760,
         "y": 800,
         "wires": [
             [
-                "c1480d88.df2f4"
+                "c1ad6204.af703"
             ]
         ]
     },
     {
-        "id": "6bcb174c.b7e838",
+        "id": "2918d654.c8b1ca",
         "type": "function",
-        "z": "f25f5cc9.90b5a",
+        "z": "9b837477.57dac8",
         "name": "LED On",
-        "func": "var data = {}\ndata[\"Red-LED\"] = \"true\"\nmsg.payload = JSON.stringify (data);\nreturn msg;",
+        "func": "var data = {}\ndata[\"Red_LED\"] = \"true\"\nmsg.payload = JSON.stringify (data);\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "x": 780,
         "y": 680,
         "wires": [
             [
-                "c1480d88.df2f4"
+                "c1ad6204.af703"
             ]
         ]
     },
     {
-        "id": "13b1f771.bd0289",
+        "id": "8aedc0c5.e57a2",
         "type": "debug",
-        "z": "f25f5cc9.90b5a",
+        "z": "9b837477.57dac8",
         "name": "",
         "active": false,
         "console": "false",
@@ -442,11 +304,11 @@
         "wires": []
     },
     {
-        "id": "cfc92d71.a9c48",
+        "id": "8b3bba52.12be78",
         "type": "ui_button",
-        "z": "f25f5cc9.90b5a",
+        "z": "9b837477.57dac8",
         "name": "ClearGraph",
-        "group": "e85eb6c8.e243f8",
+        "group": "9838c993.493de8",
         "order": 2,
         "width": "3",
         "height": "1",
@@ -462,14 +324,14 @@
         "y": 60,
         "wires": [
             [
-                "4f9b3da6.db7774"
+                "e2cb87b0.c5e458"
             ]
         ]
     },
     {
-        "id": "8184d863.d92cf8",
+        "id": "5c9f14bb.363eac",
         "type": "inject",
-        "z": "f25f5cc9.90b5a",
+        "z": "9b837477.57dac8",
         "name": "",
         "topic": "",
         "payload": "false",
@@ -481,8 +343,58 @@
         "y": 580,
         "wires": [
             [
-                "66b66bc2.6cf5a4"
+                "31609fc.b8ae76"
             ]
         ]
+    },
+    {
+        "id": "4b13cec6.bca34",
+        "type": "mqtt-broker",
+        "z": "",
+        "broker": "edgex_mqtt_broker",
+        "port": "1883",
+        "tls": "92803d3a.e24e8",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
+    },
+    {
+        "id": "9838c993.493de8",
+        "type": "ui_group",
+        "z": "",
+        "name": "Motion Detector Example",
+        "tab": "97829435.202208",
+        "order": 1,
+        "disp": true,
+        "width": "12"
+    },
+    {
+        "id": "92803d3a.e24e8",
+        "type": "tls-config",
+        "z": "",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "verifyservercert": true
+    },
+    {
+        "id": "97829435.202208",
+        "type": "ui_tab",
+        "z": "",
+        "name": "EdgeX Raspberry Pi Device",
+        "icon": "dashboard",
+        "order": 1
     }
 ]

@@ -38,11 +38,11 @@ deviceResources:
 resources:
 - name: Set_Green_Led
   set:
-  - { operation: "set", object: "Green_LED", property: "value", parameter: "LED" }
+  - { operation: "set", object: "Green_LED", property: "value", parameter: "Green_LED" }
 
 - name: Set_Red_Led
   set:
-  - { operation: "set", object: "Red_LED", property: "value", parameter: "LED" }
+  - { operation: "set", object: "Red_LED", property: "value", parameter: "Red_LED" }
 
 - name: Get_MotionState
   get:
@@ -52,7 +52,7 @@ commands:
 - name: Set_Green_Led
   put:
     path: "/api/v1/device/{deviceId}/Set_Green_Led"
-    parameterNames: ["LED"]
+    parameterNames: ["Green_LED"]
     responses:
     - code: "204"
       description: "valid and accepted"
@@ -67,7 +67,7 @@ commands:
 - name: Set_Red_Led
   put:
     path: "/api/v1/device/{deviceId}/Set_Red_Led"
-    parameterNames: ["LED"]
+    parameterNames: ["Red_LED"]
     responses:
     - code: "204"
       description: "valid and accepted"
