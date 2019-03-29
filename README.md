@@ -12,7 +12,7 @@ The repository can be found on git at [libmraa](https://github.com/intel-iot-dev
 
 You will also need to isntall the following:
 ```
-sudo apt install git cmake curl g++ libcurl4-openssl-dev libmicrohttpd-dev libyaml-dev
+sh> sudo apt install git cmake curl g++ libcurl4-openssl-dev libmicrohttpd-dev libyaml-dev
 ```
 
 ## Build Instruction:
@@ -33,17 +33,24 @@ sh> ./scripts/build.sh
 This command shall build the edgex-device-rpi release image in ./build/release/device-rpi.
 You can then run the device service using one of the example configurations in the ./examples/ folder with:
 ```
-sh> ./build/release/device-rpi --confdir ./examples/__ExampleToRun__
+sh> ./build/release/device-rpi --confdir ./examples/<ExampleToRun>
 ```
 
 ## Build Docker image:
 
 1. Check out edgex-device-rpi available at [edgex-device-rpi](https://github.com/mhall119/edgex-device-rpi)
 
-2. Build a docker image by using the following command
+2. Install docker tools
+```
+sh> sudo apt isntall docker.io
+sh> sudo usermod -a -G docker $USER
+sh> newgrp docker
+```
+
+3. Build a docker image by using the following command
 ```
 sh> cd edgex-device-rpi
-sh> docker build . -t < edgex-device-rpi > -f ./scripts/Dockerfile.alpine-3.8
+sh> docker build . -t edgex-device-rpi -f ./scripts/Dockerfile.alpine-3.8
 
 ```
 This command shall build the dependencies - libmraa and device-c-sdk library to build edgex-device-rpi release image.
