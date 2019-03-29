@@ -12,7 +12,7 @@ The repository can be found on git at [libmraa](https://github.com/intel-iot-dev
 
 You will also need to isntall the following:
 ```
-sudo apt install git cmake curl g++
+sudo apt install git cmake curl g++ libcurl4-openssl-dev libmicrohttpd-dev libyaml-dev
 ```
 
 ## Build Instruction:
