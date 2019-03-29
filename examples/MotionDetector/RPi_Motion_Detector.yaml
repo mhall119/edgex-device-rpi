@@ -5,10 +5,20 @@ labels:
 - "Example using GPIO on a Raspberry Pi"
 description: "Control an LED and PIR sensor from a RaspberryPi"
 deviceResources:
-- name: LED
-  description: "Turn the LED to On/Off"
+- name: Green_LED
+  description: "Turn the Green LED to On/Off"
   attributes:
     { Pin_Num: "11", Interface: "GPIO", Type: "OUT" }
+  properties:
+    value:
+      { type: "Bool", readWrite: "RW", size: "1", minimum: "0", maximum: "1", defaultValue: "0" }
+    units:
+      { type: "String", readWrite: "R", defaultValue: "Enabled/Disabled" }
+
+- name: Red_LED
+  description: "Turn the Red LED to On/Off"
+  attributes:
+    { Pin_Num: "12", Interface: "GPIO", Type: "OUT" }
   properties:
     value:
       { type: "Bool", readWrite: "RW", size: "1", minimum: "0", maximum: "1", defaultValue: "0" }
@@ -26,18 +36,37 @@ deviceResources:
       { type: "String", readWrite: "R", defaultValue: " " }
 
 resources:
-- name: Set_Led
+- name: Set_Green_Led
   set:
-  - { operation: "set", object: "LED", property: "value", parameter: "LED" }
+  - { operation: "set", object: "Green_LED", property: "value", parameter: "LED" }
+
+- name: Set_Red_Led
+  set:
+  - { operation: "set", object: "Red_LED", property: "value", parameter: "LED" }
 
 - name: Get_MotionState
   get:
   - { operation: "get", object: "MotionState", property: "value", parameter: "MotionState" }
 
 commands:
-- name: Set_Led
+- name: Set_Green_Led
   put:
-    path: "/api/v1/device/{deviceId}/Set_Led"
+    path: "/api/v1/device/{deviceId}/Set_Green_Led"
+    parameterNames: ["LED"]
+    responses:
+    - code: "204"
+      description: "valid and accepted"
+      expectedValues: []
+    - code: "400"
+      description: "bad request"
+      expectedValues: []
+    - code: "503"
+      description: "service unavailable"
+      expectedValues: []
+
+- name: Set_Red_Led
+  put:
+    path: "/api/v1/device/{deviceId}/Set_Red_Led"
     parameterNames: ["LED"]
     responses:
     - code: "204"
