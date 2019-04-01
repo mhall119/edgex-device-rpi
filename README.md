@@ -40,7 +40,7 @@ You can then run the device service using one of the example configurations in t
 ./build/release/device-rpi --confdir ./examples/<ExampleProject>
 ```
 
-Be sure to read and follow the setup instructions for the example project before running `device-rpi`
+Be sure to read and follow the setup instructions for the example project before running `device-rpi`. See the [Motion Detector](examples/MotionDetector/README.md) example project for more.
 
 ## Build Docker image:
 
