@@ -28,13 +28,13 @@ git clone https://github.com/mhall119/edgex-device-rpi
 cd edgex-device-rpi
 sudo ./scripts/build_deps.sh
 ```
-This command shall build the dependencies - `libmraa` and `device-c-sdk` library to build edgex-device-rpi executable.
+This command will download and  build the dependencies `libmraa` and `device-c-sdk` library to build edgex-device-rpi executable.
 
 3. Build the executable using following command
 ```
 ./scripts/build.sh
 ```
-This command shall build the edgex-device-rpi release image in `./build/release/device-rpi`.
+
 You can then run the device service using one of the example configurations in the ./examples/ folder with:
 ```
 ./build/release/device-rpi --confdir ./examples/<ExampleProject>
@@ -63,7 +63,7 @@ cd edgex-device-rpi
 docker build . -t edgex-device-rpi -f ./scripts/Dockerfile.alpine-3.8
 
 ```
-This command shall build the dependencies - libmraa and device-c-sdk library to build edgex-device-rpi release image.
+This command will build the edgex-device-rpi release image.
 By default, the configuration and profile file used by the service are available in __'res'__ folder, but you can override
 that by passing in the `./examples/<ExampleProject>` path you want to use.
 
