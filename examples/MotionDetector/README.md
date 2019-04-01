@@ -60,17 +60,21 @@ A Node-Red flow is provided for this example, you will need to load it into your
 
 1. Open http://localhost:1880/ on the the machine running your EdgeX services (or replace `localhost` with that machine's IP address)
 
-2. Import the example Node-Red configuration by copy/pasting the provided `motion_detector_flow.json` file into your instance
+2. Import the example Node-Red configuration by copy/pasting the provided `motion_detector_flow.json` file into your instance:
+
 ![Import from Clipboard](nodered_clipboard.png)
 ![Import Flow](nodered_import.png)
 
-Because an EdgeX Device Command has a unique, generated URL, you will need to update your Node-Red flow with the correct URL from your EdgeX instance.
+Because an EdgeX Device Command has a unique generated URL, you will need to update your Node-Red flow with the correct URL from your EdgeX instance.
 
 3. Open http://localhost:48082/api/v1/device/name/RPiMotionDetector on the machine running your EdgeX services (or replace `localhost` with that machine's IP address)
 
-4. Find the `url` property for `Set_Green_Led`
+4. Find the `url` property for `Set_Green_Led`, it will look something like this:
+```
+http://edgex-core-command:48082/api/v1/device/5ca248279f8fc20001bdc03c/command/5ca248269f8fc20001bdc038
+```
 
-5. Copy that URL into the URL field for the `Set Greed LED` node in your Node-Red flow:
+5. Copy that URL into the URL field for the `Set Green LED` node in your Node-Red flow:
 
 ![Update Command URL](nodered_commands.png)
 
@@ -81,7 +85,7 @@ Because an EdgeX Device Command has a unique, generated URL, you will need to up
 
 ### Export device service readings to Node-Red
 
-Finally, you need to tell your EdgeX instance to export data to Node-Red. 
+Finally, you need to tell your EdgeX instance to export data from `device-rpi` to Node-Red. 
 This example uses the Mosquitto MQTT broker to link the two. 
 
 Run the `register_mqtt_export.sh` script on the machine running your EdgeX services (or replace `localhost` at the end of that script with that machine's IP address)
@@ -92,7 +96,7 @@ Run the `register_mqtt_export.sh` script on the machine running your EdgeX servi
 
 ## Testing
 
-You will now have a Node-Red dashboard at http://localhost:1880/ui/ where you can watch motion events come in, and control the Red LED on your board.
+You will now have a Node-Red dashboard at http://localhost:1880/ui/ where you can watch motion events come in and also control the Red LED on your board.
 
 ![Node-Red Dashboard](nodered_dashboard.png)
 
