@@ -1,0 +1,136 @@
+name: edgex-device-rpi
+base: core18
+version: '0.1'
+summary: Connect to GPIO pins on RasPi with EdgeX
+description: |
+  The EdgeX Device RaspberryPi Service is developed to control/communicate 
+  with sensors connected the GPIO pins on a RaspberryPi
+
+architectures:
+  - build-on: arm64
+    run-on: arm64
+  - build-on: armhf
+    run-on: armhf
+
+grade: stable
+confinement: strict
+
+apps:
+  device-rpi:
+    command: bin/device-rpi --registry --confdir $SNAP_DATA/config/configuration.toml
+    plugs:
+      - network
+      - network-bind
+      - gpio
+
+parts:
+  config:
+    source: .
+    plugin: dump
+    organize:
+      res/configuration.toml: config/configuration.toml
+      LICENSE: usr/share/doc/edgex-device-rpi/LICENSE
+    override-build: |
+      snapcraftctl build
+      # change the host specifications to be localhost for the snap
+      sed -i \
+        -e s'@Host = \"edgex-device-rpi\"@Host = \"localhost\"@' \
+        -e s'@Host = \"edgex-core-data\"@Host = \"localhost\"@' \
+        -e s'@Host = \"edgex-core-metadata\"@Host = \"localhost\"@' \
+        $SNAPCRAFT_PART_INSTALL/res/configuration.toml
+    stage: [-*]
+    prime: 
+      - config/configuration.toml
+      - usr/share/doc/edgex-device-rpi/LICENSE
+  stage-patches:
+    source: .
+    plugin: dump
+    prime: [-*]
+    stage: [scripts/rpi_patch]
+    after: [config]
+  libmraa:
+    source: https://github.com/intel-iot-devkit/mraa.git
+    source-commit: d320776
+    plugin: cmake
+    configflags:
+      - -DBUILDSWIG=OFF
+    after: [stage-patches]
+    override-build: |
+      cd $SNAPCRAFT_PART_SRC
+      patch -p1 < $SNAPCRAFT_STAGE/scripts/rpi_patch
+      snapcraftctl build
+    prime:
+      - lib/libmraa*
+    build-packages:
+      - g++
+  tomlc99:
+    source: https://github.com/IOTechSystems/tomlc99.git
+    source-tag: SDK-0.2
+    source-depth: 1
+    plugin: dump
+    organize:
+      toml.c: src/c/toml.c
+      toml.h: src/c/toml.h
+    stage:
+      - src/c
+    prime: [-*]
+  iotech-c-utils:
+    source: https://github.com/IOTechSystems/iotech-c-utils.git
+    source-tag: v0.1.3
+    source-depth: 1
+    plugin: dump
+    stage: 
+      - src/c/scheduler.c
+      - src/c/logging.c
+      - include/iot
+    prime: [-*]
+  c-thread-pool:
+    source: https://github.com/IOTechSystems/C-Thread-Pool.git
+    source-tag: SDK-0.1
+    source-depth: 1
+    plugin: dump
+    organize:
+      thpool.c: src/c/thpool.c
+      thpool.h: include/thpool.h
+    stage:
+      - src/c/thpool.c
+      - include/thpool.h
+    prime: [-*]
+  device-sdk-c:
+    after: 
+      - tomlc99
+      - c-thread-pool
+      - iotech-c-utils
+    plugin: cmake
+    configflags: 
+      - -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+      - -DCMAKE_BUILD_TYPE=Release
+    source: https://github.com/edgexfoundry/device-sdk-c.git
+    source-branch: delhi
+    source-subdir: src
+    override-build: |
+      # copy all of the dep sources from $SNAPCRAFT_STAGE into the build folder
+      cd $SNAPCRAFT_PART_SRC
+      cp -r $SNAPCRAFT_STAGE/src/c/* src/c/
+      cp -r $SNAPCRAFT_STAGE/include/* include/
+      snapcraftctl build
+    build-packages:
+      - libcurl4-openssl-dev
+      - libmicrohttpd-dev
+      - libyaml-dev
+  edgex-device-rpi:
+    source: .
+    plugin: cmake
+    source-subdir: src/c
+    after: 
+      - device-sdk-c
+      - libmraa
+    configflags:
+      - -DCMAKE_BUILD_TYPE=Release
+  pkgs:
+    plugin: nil
+    stage-packages:
+      - libcurl4-openssl-dev
+      - libmicrohttpd-dev
+      - libyaml-dev
+      - curl
