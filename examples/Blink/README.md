@@ -1,4 +1,4 @@
-# Motion Detector Example
+# Blink LED Example
 
 ## About
 Example lighting control using an LED and Node-Red
