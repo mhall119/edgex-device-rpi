@@ -1,10 +1,12 @@
 # Device RaspberryPi GPIO Service
 
 ## About
-The EdgeX Device RaspberryPi Service is developed to control/communicate with sensors connected the GPIO pins on a RaspberryPi
+The EdgeX RaspberryPi Device Service is developed to control/communicate with sensors connected the GPIO pins on a RaspberryPi
 
 ## Supported Boards:
-Raspberry PI 3+ - ARM64 bit
+Raspberry PI 3+
+ - Ubuntu 18.04 64bit
+ - Raspbian Stretch 32bit
 
 ## Dependencies:
 The Device RaspberryPi service is developed using libmraa - a low level library that communicates with the Raspberry PI board.
@@ -68,6 +70,14 @@ By default, the configuration and profile file used by the service are available
 that by passing in the `./examples/<ExampleProject>` path you want to use.
 
 
+## Example Projects
+
+The EdgeX RaspberryPi Device Service comes with some pre-defined examples you can use to get started.
+These projects include instructions for running EdgeX services on your PC, running the RPi service on your device, wiring diagrams for connecting sensors, and configuration files for controlling everything. 
+
+Available exampless are:
+ - [LED Control](examples/Blink/README.md)
+ - [Motion Detector](examples/MotionDetector/README.md)
 
 
 
