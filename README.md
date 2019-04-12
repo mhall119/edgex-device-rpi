@@ -9,10 +9,8 @@ Raspberry PI 3+
  - Raspbian Stretch 32bit
 
 ## Dependencies:
-The Device RaspberryPi service is developed using libmraa - a low level library that communicates with the Raspberry PI board.
-The repository can be found on git at [libmraa](https://github.com/intel-iot-devkit/mraa). 
-
-You will need some build tools to compile and run the Device RaspberryPi service.
+1
+You will also need some build tools to compile and run the Device RaspberryPi service.
 On Rasbian or Ubuntu, these can be installed with:
 ```
 sudo apt install git cmake curl g++ libcurl4-openssl-dev libmicrohttpd-dev libyaml-dev
@@ -42,7 +40,7 @@ You can then run the device service using one of the example configurations in t
 ./build/release/device-rpi --confdir ./examples/<ExampleProject>
 ```
 
-Be sure to read and follow the setup instructions for the example project before running `device-rpi`. See the [Motion Detector](examples/MotionDetector/README.md) example project for more.
+Be sure to read and follow the setup instructions for the example project before running `device-rpi`. See the [Example Projects](#example-projects) below for more.
 
 ## Build Docker image:
 
@@ -67,7 +65,7 @@ docker build . -t edgex-device-rpi -f ./scripts/Dockerfile.alpine-3.8
 ```
 This command will build the edgex-device-rpi release image.
 By default, the configuration and profile file used by the service are available in __'res'__ folder, but you can override
-that by passing in the `./examples/<ExampleProject>` path you want to use.
+that by passing in the `./examples/<ExampleProject>` path you want to use. See the [Example Projects](#example-projects) below for more.
 
 
 ## Example Projects
