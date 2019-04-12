@@ -9,7 +9,7 @@ Raspberry PI 3+
  - Raspbian Stretch 32bit
 
 ## Dependencies:
-1
+
 You will also need some build tools to compile and run the Device RaspberryPi service.
 On Rasbian or Ubuntu, these can be installed with:
 ```
