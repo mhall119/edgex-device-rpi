@@ -1,0 +1,38 @@
+name: "RPi_Blink_Led"
+manufacturer: "EdgeX Foundry"
+model: ""
+labels:
+- "Example using GPIO on a Raspberry Pi"
+description: "Control an LED from a RaspberryPi"
+deviceResources:
+- name: LED
+  description: "Turn the LED to On/Off"
+  attributes:
+    { Pin_Num: "11", Interface: "GPIO", Type: "OUT" }
+  properties:
+    value:
+      { type: "Bool", readWrite: "RW", size: "1", minimum: "0", maximum: "1", defaultValue: "0" }
+    units:
+      { type: "String", readWrite: "R", defaultValue: "Enabled/Disabled" }
+
+resources:
+- name: Set_Led
+  set:
+  - { operation: "set", object: "LED", property: "value", parameter: "LED" }
+
+commands:
+- name: Set_Led
+  put:
+    path: "/api/v1/device/{deviceId}/Set_Led"
+    parameterNames: ["LED"]
+    responses:
+    - code: "204"
+      description: "valid and accepted"
+      expectedValues: []
+    - code: "400"
+      description: "bad request"
+      expectedValues: []
+    - code: "503"
+      description: "service unavailable"
+      expectedValues: []
+

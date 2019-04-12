@@ -1,0 +1,249 @@
+[
+    {
+        "id": "c2bcd76e.9750c8",
+        "type": "tab",
+        "label": "Flow 1"
+    },
+    {
+        "id": "56c04e7e.8849d",
+        "type": "ui_group",
+        "z": "",
+        "name": "RPi Blink Example",
+        "tab": "7a9e6d88.930354",
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "7a9e6d88.930354",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Device RPi Examples",
+        "icon": "dashboard"
+    },
+    {
+        "id": "177815a4.e6e1fa",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "c7be2731.684148",
+        "type": "http request",
+        "z": "c2bcd76e.9750c8",
+        "name": "Set LED",
+        "method": "PUT",
+        "ret": "txt",
+        "url": "http://edgex-core-command:48082/api/v1/device/5cb0a57d9f8fc20001344799/command/5cb0a5629f8fc20001344796",
+        "tls": "",
+        "x": 1180,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "32ce4707.be3558",
+        "type": "inject",
+        "z": "c2bcd76e.9750c8",
+        "name": "",
+        "topic": "",
+        "payload": "false",
+        "payloadType": "bool",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 169,
+        "y": 221,
+        "wires": [
+            [
+                "6d875e11.3f6ff"
+            ]
+        ]
+    },
+    {
+        "id": "6d875e11.3f6ff",
+        "type": "ui_switch",
+        "z": "c2bcd76e.9750c8",
+        "name": "",
+        "label": "LED Switch",
+        "group": "56c04e7e.8849d",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "x": 447,
+        "y": 322,
+        "wires": [
+            [
+                "187a5128.bc51ef"
+            ]
+        ]
+    },
+    {
+        "id": "187a5128.bc51ef",
+        "type": "switch",
+        "z": "c2bcd76e.9750c8",
+        "name": "Enable LED",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "true"
+            },
+            {
+                "t": "false"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 2,
+        "x": 716,
+        "y": 378,
+        "wires": [
+            [
+                "15162155.9b04df"
+            ],
+            [
+                "dc04afc3.41245"
+            ]
+        ]
+    },
+    {
+        "id": "15162155.9b04df",
+        "type": "function",
+        "z": "c2bcd76e.9750c8",
+        "name": "Turn on LED",
+        "func": "var data = {}\ndata[\"LED\"] = \"true\"\nmsg.payload = JSON.stringify (data);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 946,
+        "y": 358,
+        "wires": [
+            [
+                "c7be2731.684148",
+                "3df342e8.3bda2e"
+            ]
+        ]
+    },
+    {
+        "id": "dc04afc3.41245",
+        "type": "function",
+        "z": "c2bcd76e.9750c8",
+        "name": "Turn off LED",
+        "func": "var data = {}\ndata[\"LED\"] = \"false\"\nmsg.payload = JSON.stringify (data);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 950,
+        "y": 480,
+        "wires": [
+            [
+                "c7be2731.684148",
+                "3df342e8.3bda2e"
+            ]
+        ]
+    },
+    {
+        "id": "3df342e8.3bda2e",
+        "type": "debug",
+        "z": "c2bcd76e.9750c8",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 1183,
+        "y": 558,
+        "wires": []
+    }
+]
