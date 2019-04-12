@@ -21,21 +21,21 @@ sudo apt install git cmake curl g++ libcurl4-openssl-dev libmicrohttpd-dev libya
 1. Check out edgex-device-rpi repo:
 ```
 git clone https://github.com/mhall119/edgex-device-rpi
+cd edgex-device-rpi
 ```
 
-2. Build the executable using following command
+2. Download and build the dependencies:
 ```
-cd edgex-device-rpi
 sudo ./scripts/build_deps.sh
 ```
-This command will download and  build the dependencies `libmraa` and `device-c-sdk` library to build edgex-device-rpi executable.
+This command will download and build both the `libmraa` and `device-c-sdk` libraries needed to build the edgex-device-rpi executable.
 
-3. Build the executable using following command
+3. Build the executable:
 ```
 ./scripts/build.sh
 ```
 
-You can then run the device service using one of the example configurations in the ./examples/ folder with:
+You can then run the device service using one of the example configurations in the [./examples/](./examples/) folder with:
 ```
 ./build/release/device-rpi --confdir ./examples/<ExampleProject>
 ```
