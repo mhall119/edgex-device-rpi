@@ -23,10 +23,9 @@ extern "C" {
 
 
 #define RPI_ERR_CHECK(x) if (x.code) { fprintf (stderr, "Error: %d: %s\n", x.code, x.reason); return x.code; }
-#define RPI_SUBPLATFORM_OFFSET 512
 #define RPI_NO_GPIO_PINS 7
-#define RPI_NO_AIO_PINS 3
-#define RPI_NO_I2C_PINS 3
+#define RPI_NO_AIO_PINS 0
+#define RPI_NO_I2C_PINS 0
 #define RPI_NO_PORTS RPI_NO_GPIO_PINS + RPI_NO_AIO_PINS + RPI_NO_I2C_PINS
 
 #define RPI_I2C_BUS 0
@@ -34,7 +33,7 @@ extern "C" {
 #define RPI_ROTARY_MAX_ANGLE 300
 #define RPI_ADC_REF 5
 
-#define RPI_SVC "Device-Grove"
+#define RPI_SVC "Device-RPi"
 
 typedef enum
 {

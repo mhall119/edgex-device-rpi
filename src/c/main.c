@@ -109,7 +109,6 @@ static mraa_result_t rpi_gpio_init (rpi_pidriver_t *impln, char *pin, char *type
   mraa_result_t status = MRAA_SUCCESS;
   rpi_interface_type_t pin_type = RPI_GPIO;
 
-  //int pin_number = RPI_SUBPLATFORM_OFFSET + (pin[strlen (pin) - 1] - '0');
   int pin_number = atoi(pin);
   iot_log_error(impln->lc, "Initializing pin %d", pin_number);
   mraa_gpio_context dev = mraa_gpio_init (pin_number);
@@ -149,109 +148,6 @@ static mraa_result_t rpi_gpio_init (rpi_pidriver_t *impln, char *pin, char *type
   return status;
 }
 
-static mraa_result_t rpi_aio_init (rpi_pidriver_t *impln, char *pin)
-{
-  mraa_result_t status = MRAA_SUCCESS;
-  rpi_interface_type_t pin_type = RPI_AIO;
-
-  int pin_number = RPI_SUBPLATFORM_OFFSET + (pin[strlen (pin) - 1] - '0');
-  mraa_aio_context dev = mraa_aio_init (pin_number);
-
-  if (dev == NULL)
-  {
-    status = MRAA_ERROR_UNSPECIFIED;
-    iot_log_error (impln->lc, "Failed to initialize a device at AIO %s", pin);
-  }
-  else
-  {
-    if ((rpi_set_devctxt (impln, (void *) dev, pin, pin_type)) == NULL)
-    {
-      iot_log_error (impln->lc, "Unable to set the mraadev_ctxt at %s", pin);
-      status = MRAA_ERROR_UNSPECIFIED;
-    }
-  }
-  return status;
-}
-
-static mraa_result_t rpi_lcd_init (rpi_pidriver_t *impln, char *pin)
-{
-  /* Initialize I2C bus for LCD */
-  mraa_i2c_context lcd_dev = NULL;
-  mraa_i2c_context rgb_dev = NULL;
-  mraa_result_t status = MRAA_SUCCESS;
-
-  if (!(lcd_dev = mraa_i2c_init (RPI_I2C_BUS)))
-  {
-    status = MRAA_ERROR_UNSPECIFIED;
-    iot_log_error (impln->lc, "mraa_i2c_init(LCD) connected to %s failed\n", pin);
-    return status;
-  }
-  else
-  {
-    status = mraa_i2c_address (lcd_dev, RPI_LCD_ADDR);
-    if (status != MRAA_SUCCESS)
-    {
-      iot_log_error (impln->lc, "mraa_i2c_address(LCD) connected to %s failed, status = %d\n", pin, status);
-      mraa_i2c_stop (lcd_dev);
-      return status;
-    }
-  }
-
-  /* Initialize I2C bus for Backlight */
-  if (!(rgb_dev = mraa_i2c_init (RPI_I2C_BUS)))
-  {
-    status = MRAA_ERROR_UNSPECIFIED;
-    iot_log_error (impln->lc, "mraa_i2c_init(RGB) connected to %s failed\n", pin);
-    return status;
-  }
-  else
-  {
-    status = mraa_i2c_address (rgb_dev, RPI_RGB_ADDR);
-    if (status != MRAA_SUCCESS)
-    {
-      iot_log_error (impln->lc, "mraa_i2c_address(RGB) connected to %s failed, status = %d\n", pin, status);
-      mraa_i2c_stop (rgb_dev);
-      return status;
-    }
-  }
-
-  status = rpi_lcd_hd44780_init (lcd_dev, rgb_dev);
-  if (status == MRAA_SUCCESS)
-  {
-    /* store the lcd_dev context */
-    rpi_interface_type_t pin_type = RPI_I2C;
-    rpi_dev_ctxt_t *lcd_ctx = rpi_set_devctxt (impln, (void *) lcd_dev, pin, pin_type);
-    if (lcd_ctx == NULL)
-    {
-      iot_log_error (impln->lc, "Unable to set the mraadev_ctxt at %s", pin);
-      status = MRAA_ERROR_UNSPECIFIED;
-    }
-    else
-    {
-      rpi_i2c_dev_ctxt_t *i2c_ctx = (rpi_i2c_dev_ctxt_t *) lcd_ctx->dev_ctxt;
-      i2c_ctx->rgb_dev = rgb_dev;
-      i2c_ctx->is_lcd = true;
-    }
-  }
-  return status;
-}
-
-static mraa_result_t rpi_i2c_init (rpi_pidriver_t *impln, char *pin, char *type)
-{
-  mraa_result_t status = MRAA_SUCCESS;
-
-  if (strcmp (type, "LCD") == 0)
-  {
-    status = rpi_lcd_init (impln, pin);
-  }
-  else
-  {
-    status = MRAA_ERROR_UNSPECIFIED;
-    iot_log_warning (impln->lc, "Invalid Type, Ignore I2C initialization");
-  }
-  return status;
-}
-
 static bool rpi_init (void *impl, struct iot_logging_client *lc, const edgex_nvpairs *config)
 {
   mraa_result_t status = MRAA_SUCCESS;
@@ -267,7 +163,7 @@ static bool rpi_init (void *impl, struct iot_logging_client *lc, const edgex_nvp
     status = mraa_init ();
     if (status != MRAA_SUCCESS)
     {
-      iot_log_error (lc, "GrovePI driver initialization failed");
+      iot_log_error (lc, "RaspberryPi driver initialization failed");
       return false;
     }
 
@@ -298,16 +194,6 @@ static bool rpi_init (void *impl, struct iot_logging_client *lc, const edgex_nvp
           if (strcmp (rpi_attr->pin_type, "GPIO") == 0)
           {
             status = rpi_gpio_init (impln, rpi_attr->pin_no, rpi_attr->type);
-            assert (!status);
-          }
-          else if (strcmp (rpi_attr->pin_type, "AIO") == 0)
-          {
-            status = rpi_aio_init (impln, rpi_attr->pin_no);
-            assert (!status);
-          }
-          else if (strcmp (rpi_attr->pin_type, "I2C") == 0)
-          {
-            status = rpi_i2c_init (impln, rpi_attr->pin_no, rpi_attr->type);
             assert (!status);
           }
           else
@@ -358,7 +244,7 @@ static bool rpi_gethandler
         /* error */
         ret_status = false;       
       }
-         /* Grove Button */
+         /* RaspberryPi Button */
       else if (strcmp (requests->devobj->properties->value->type, "Uint8") == 0)
       {
         readings->value.ui8_result = (uint8_t) read_value;
@@ -370,76 +256,9 @@ static bool rpi_gethandler
         ret_status = false;
       }
     } /* GPIO */
-    else if (strcmp (rpi_attr->pin_type, "AIO") == 0)
-    {
-      mraa_aio_context aio_dev = (mraa_aio_context) mraa_devctxt->dev_ctxt;
-      read_value = mraa_aio_read (aio_dev);
-      if (read_value == -1)
-      {
-        /* error */
-        ret_status = false;    
-      }
-      else
-      {
-        // get adc bit range
-        int16_t range = (1 << mraa_aio_get_bit (aio_dev)) - 1;
-        if (strcmp (requests->devobj->name, "SoundIntensity") == 0)
-        {
-          assert (nresults == 1);
-          assert (!strcmp (requests->devobj->properties->value->type, "Float32"));
-          readings->type = Float32;
-          if (rpi_attr->normalize)
-          {
-            readings->value.f32_result = (float) read_value * RPI_ADC_REF / range;
-          }
-          else
-          {
-            readings->value.f32_result = (float) read_value;
-          }
-        }
-        else if (strcmp (requests->devobj->name, "LightIntensity") == 0)
-        {
-          assert (nresults == 1);
-          assert (!strcmp (requests->devobj->properties->value->type, "Float32"));
-          /* Ref: https://github.com/intel-iot-devkit/upm/src/light/light.c */
-          readings->value.f32_result = (float) (10000.0 / powf ((((float) (range) - read_value) * 10.0 / read_value) * 15.0, 4.0 / 3.0));
-          readings->type = Float32;
-        }
-        else
-        {
-          assert (nresults == 2); /* For RotarySensorMeasurements */
-          for (int index = 0; (requests[index].devobj != NULL && index < nresults); index++)
-          {
-            readings[index].type = Float32;
-            if (strcmp ((requests[index].devobj)->name, "RotaryAngle") == 0)
-            {
-              if (rpi_attr->normalize)
-              {
-                readings[index].value.f32_result = read_value * (float) RPI_ROTARY_MAX_ANGLE / range;
-              }
-              else
-              {
-                readings[index].value.f32_result = read_value;
-              }
-            }
-            else if (strcmp ((requests[index].devobj)->name, "RotaryVoltage") == 0)
-            {
-              if (rpi_attr->normalize)
-              {
-                readings[index].value.f32_result = read_value * (float) RPI_ADC_REF / range;
-              }
-              else
-              {
-                readings[index].value.f32_result = read_value;
-              }
-            }
-          }
-        }
-      }
-    } /* AIO */
     else
     {
-      /* Only GPIO, AIO and I2C interface types are supported */
+      /* Only GPIO types are supported */
       ret_status = false;
     }
   } /* dev_ctxt != NULL */
@@ -478,38 +297,6 @@ static bool rpi_puthandler
 
       status = mraa_gpio_write (gpio_dev, readings[--nrequests].value.bool_result);
     }
-    else if (strcmp (rpi_attr->pin_type, "I2C") == 0)
-    {
-      assert (nrequests == 3); /* for lcd */
-
-      rpi_i2c_dev_ctxt_t *i2c_dev = (rpi_i2c_dev_ctxt_t *) (mraa_devctxt->dev_ctxt);
-      mraa_i2c_context mraa_i2cdev = (mraa_i2c_context) (i2c_dev->dev);
-
-      uint8_t column = 0;
-      uint8_t row = 0;
-      char *display_string = NULL;
-
-      for (int index = 0; (requests[index].devobj != NULL && index < nrequests); index++)
-      {
-        struct edgex_deviceobject *devobj = (struct edgex_deviceobject *) requests[index].devobj;
-        if (strcmp (devobj->name, "Display-String") == 0)
-        {
-          display_string = strdup (readings[index].value.string_result);
-        }
-        else if (strcmp (devobj->name, "Row") == 0)
-        {
-          row = (readings[index]).value.ui8_result;
-        }
-        else if (strcmp (devobj->name, "Column") == 0)
-        {
-          column = (readings[index]).value.ui8_result;
-        }
-      }
-      status |= rpi_lcd_set_cursor (mraa_i2cdev, row, column);
-      status |= rpi_lcd_write (mraa_i2cdev, display_string, strlen (display_string));
-
-      free (display_string);
-    }
     else
     {
       /* PWM & Serial interface support not implemented */
@@ -545,27 +332,6 @@ static void rpi_stop (void *impl, bool force)
         {
           mraa_gpio_context gpio_dev = (mraa_gpio_context) impln->dev[index]->dev_ctxt;
           status |= mraa_gpio_close (gpio_dev);
-          break;
-        }
-        case RPI_AIO:
-        {
-          mraa_aio_context aio_dev = (mraa_aio_context) impln->dev[index]->dev_ctxt;
-          status |= mraa_aio_close (aio_dev);
-          break;
-        }
-        case RPI_I2C:
-        {
-          rpi_i2c_dev_ctxt_t *i2c_dev = (rpi_i2c_dev_ctxt_t *) impln->dev[index]->dev_ctxt;
-          if (i2c_dev->is_lcd)
-          {
-            rpi_lcd_cleardisplay (i2c_dev->dev);
-            rpi_rgb_backlight_on (i2c_dev->rgb_dev, false);
-
-            status |= mraa_i2c_stop (i2c_dev->rgb_dev);
-            i2c_dev->rgb_dev = NULL;
-            i2c_dev->is_lcd = false;
-          }
-          status |= mraa_i2c_stop (i2c_dev->dev);
           break;
         }
         default: 
