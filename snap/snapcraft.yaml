@@ -17,7 +17,7 @@ confinement: strict
 
 apps:
   edgex-device-rpi:
-    command: bin/device-rpi --registry --confdir $SNAP_DATA/config/configuration.toml
+    command: bin/device-rpi
     plugs:
       - network
       - network-bind
