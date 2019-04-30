@@ -16,7 +16,7 @@ grade: stable
 confinement: strict
 
 apps:
-  device-rpi:
+  edgex-device-rpi:
     command: bin/device-rpi --registry --confdir $SNAP_DATA/config/configuration.toml
     plugs:
       - network
