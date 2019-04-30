@@ -19,6 +19,8 @@ apps:
   edgex-device-rpi:
     command: bin/device-rpi
     plugs:
+      - home
+      - removable-media
       - network
       - network-bind
       - gpio
