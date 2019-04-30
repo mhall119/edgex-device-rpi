@@ -1,0 +1,16 @@
+#!/bin/bash 
+
+# make sure that the daemon-args config item is either empty or a valid json 
+# list of strings
+args=$(snapctl get -d daemon-args)
+
+# empty, exit 0
+if [ "$args" = "{}" ]; then
+    exit 0
+fi
+
+# not empty, check to make sure it's a valid json list
+if ! jq -r '."daemon-args" | .[]' > /dev/null 2>/dev/null; then
+    echo "error: daemon-args key (\"$args\") is not a list"
+    exit 1
+fi

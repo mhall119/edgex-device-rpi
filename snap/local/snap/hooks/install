@@ -2,3 +2,6 @@
 
 # copy all the examples into $SNAP_DATA
 cp -r "$SNAP/examples" "$SNAP_DATA/examples"
+
+# disable the daemon initially
+snapctl stop --disable "$SNAP_NAME.daemon"
