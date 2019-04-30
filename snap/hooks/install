@@ -1,0 +1,4 @@
+#!/bin/bash -e
+
+# copy all the examples into $SNAP_DATA
+cp -r "$SNAP/examples" "$SNAP_DATA/examples"

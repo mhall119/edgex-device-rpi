@@ -16,38 +16,35 @@ grade: stable
 confinement: strict
 
 apps:
-  device-rpi:
-    command: bin/device-rpi --registry --confdir $SNAP_DATA/config/configuration.toml
+  edgex-device-rpi:
+    command: bin/device-rpi
     plugs:
+      - home
+      - removable-media
       - network
       - network-bind
       - gpio
 
 parts:
-  config:
+  examples:
     source: .
     plugin: dump
     organize:
-      res/configuration.toml: config/configuration.toml
       LICENSE: usr/share/doc/edgex-device-rpi/LICENSE
-    override-build: |
-      snapcraftctl build
-      # change the host specifications to be localhost for the snap
-      sed -i \
-        -e s'@Host = \"edgex-device-rpi\"@Host = \"localhost\"@' \
-        -e s'@Host = \"edgex-core-data\"@Host = \"localhost\"@' \
-        -e s'@Host = \"edgex-core-metadata\"@Host = \"localhost\"@' \
-        $SNAPCRAFT_PART_INSTALL/res/configuration.toml
-    stage: [-*]
     prime: 
-      - config/configuration.toml
+      - examples/*
+      - usr/share/doc/edgex-device-rpi/LICENSE
+    stage: 
+      - examples/*
       - usr/share/doc/edgex-device-rpi/LICENSE
   stage-patches:
     source: .
+    after: [examples]
     plugin: dump
+    organize:
+      LICENSE: usr/share/doc/edgex-device-rpi/LICENSE
     prime: [-*]
     stage: [scripts/rpi_patch]
-    after: [config]
   libmraa:
     source: https://github.com/intel-iot-devkit/mraa.git
     source-commit: d320776
