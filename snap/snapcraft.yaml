@@ -23,6 +23,7 @@ confinement: strict
 # command-chain for the configure hook here
 # all of this is necessary so we can use jq from the snap inside the configure
 # hook
+assumes: [command-chain]
 passthrough:
   hooks:
     configure:
