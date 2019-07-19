@@ -15,12 +15,12 @@ deviceResources:
     units:
       { type: "String", readWrite: "R", defaultValue: "Enabled/Disabled" }
 
-resources:
+deviceCommands:
 - name: Set_Led
   set:
   - { operation: "set", object: "LED", property: "value", parameter: "LED" }
 
-commands:
+coreCommands:
 - name: Set_Led
   put:
     path: "/api/v1/device/{deviceId}/Set_Led"
