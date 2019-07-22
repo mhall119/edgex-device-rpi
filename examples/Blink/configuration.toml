@@ -37,3 +37,5 @@
   Profile = "RPi_Blink_Led"
   Description = "LED control using RPi's GPIO pins"
   Labels = [ "RPi Example" ]
+  [DeviceList.Protocols.GPIO]
+    Address = "GPIO"

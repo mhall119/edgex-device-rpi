@@ -19,16 +19,7 @@ static void rpi_inthandler (int i)
   stop = true;
 }
 
-static void usage (void)
-{
-  printf ("Options: \n");
-  printf ("   -h, --help           : Show this text\n");
-  printf ("   -r, --registry       : Use the registry service\n");
-  printf ("   -p, --profile <name> : Set the profile name\n");
-  printf ("   -c, --confdir <dir>  : Set the configuration directory\n");
-}
-
-static rpi_attributes_t *get_rpiattributes (edgex_nvpairs *device_attr)
+static rpi_attributes_t *get_rpiattributes (const edgex_nvpairs *device_attr)
 {
   rpi_attributes_t *rpi_attr = (rpi_attributes_t *) malloc (sizeof (rpi_attributes_t));
   for (; device_attr != NULL; device_attr = device_attr->next)
@@ -148,7 +139,7 @@ static mraa_result_t rpi_gpio_init (rpi_pidriver_t *impln, char *pin, char *type
   return status;
 }
 
-static bool rpi_init (void *impl, struct iot_logging_client *lc, const edgex_nvpairs *config)
+static bool rpi_init (void *impl, struct iot_logger_t *lc, const edgex_nvpairs *config)
 {
   mraa_result_t status = MRAA_SUCCESS;
   rpi_pidriver_t *impln = (rpi_pidriver_t *) impl;
@@ -157,7 +148,6 @@ static bool rpi_init (void *impl, struct iot_logging_client *lc, const edgex_nvp
 
   iot_log_debug (lc, "driver initialization");
   {
-    uint32_t nprofiles = 0;
     edgex_deviceprofile *profiles = NULL;
 
     status = mraa_init ();
@@ -170,11 +160,11 @@ static bool rpi_init (void *impl, struct iot_logging_client *lc, const edgex_nvp
     //mraa_add_subplatform (MRAA_RPIPI, "0");
 
     /* read the attributes from the device profile to initialize the driver */
-    edgex_device_service_getprofiles (impln->svc, &nprofiles, &profiles);
+    profiles = edgex_device_profiles (impln->svc);
 
-    while (nprofiles--)
+    while (profiles)
     {
-      edgex_deviceobject *dev_obj = profiles[nprofiles].device_resources;
+      edgex_deviceresource *dev_obj = profiles->device_resources;
       rpi_attributes_t *rpi_attr = NULL;
       for (; dev_obj != NULL; dev_obj = dev_obj->next)
       {
@@ -204,6 +194,7 @@ static bool rpi_init (void *impl, struct iot_logging_client *lc, const edgex_nvp
         }
         free (rpi_attr);
       }
+      profiles = profiles->next;
     }
     free (profiles);
   }
@@ -212,18 +203,19 @@ static bool rpi_init (void *impl, struct iot_logging_client *lc, const edgex_nvp
 }
 
 static bool rpi_gethandler
-(
-  void *impl,
-  const edgex_addressable *devaddr,
-  uint32_t nresults,
-  const edgex_device_commandrequest *requests,
-  edgex_device_commandresult *readings
-)
-{
+  (
+    void *impl,
+    const char *devname,
+    const edgex_protocols *protocols,
+    uint32_t nreadings,
+    const edgex_device_commandrequest *requests,
+    edgex_device_commandresult *readings
+  )
+  {
   rpi_pidriver_t *impln = (rpi_pidriver_t *) impl;
 
   pthread_mutex_lock (&impln->mutex);
-  edgex_nvpairs *dev_attr = requests[0].devobj->attributes;
+  const edgex_nvpairs *dev_attr = requests->attributes;
   assert (dev_attr != NULL);
   rpi_attributes_t *rpi_attr = get_rpiattributes (dev_attr);
   bool ret_status = true;
@@ -245,7 +237,7 @@ static bool rpi_gethandler
         ret_status = false;       
       }
          /* RaspberryPi Button */
-      else if (strcmp (requests->devobj->properties->value->type, "Uint8") == 0)
+      else if (requests->type == Uint8)
       {
         readings->value.ui8_result = (uint8_t) read_value;
         readings->type = Uint8;
@@ -268,20 +260,21 @@ static bool rpi_gethandler
 }
 
 static bool rpi_puthandler
-(
-  void *impl,
-  const edgex_addressable *devaddr,
-  uint32_t nrequests,
-  const edgex_device_commandrequest *requests,
-  const edgex_device_commandresult *readings
-)
+  (
+    void *impl,
+    const char *devname,
+    const edgex_protocols *protocols,
+    uint32_t nvalues,
+    const edgex_device_commandrequest *requests,
+    const edgex_device_commandresult *readings
+  )
 {
   mraa_result_t status = MRAA_SUCCESS;
   rpi_pidriver_t *impln = (rpi_pidriver_t *) impl;
 
   pthread_mutex_lock (&impln->mutex);
   /* Get the device context */
-  edgex_nvpairs *dev_attr = requests[0].devobj->attributes;
+  const edgex_nvpairs *dev_attr = requests->attributes;
   assert (dev_attr != NULL);
   rpi_attributes_t *rpi_attr = get_rpiattributes (dev_attr);
 
@@ -292,10 +285,10 @@ static bool rpi_puthandler
     {
       mraa_gpio_context gpio_dev = (mraa_gpio_context) mraa_devctxt->dev_ctxt;
 
-      assert (!strcmp (requests->devobj->properties->value->type, "Bool"));
-      assert (nrequests == 1);
+      assert (!requests->type == Bool);
+      assert (nvalues == 1);
 
-      status = mraa_gpio_write (gpio_dev, readings[--nrequests].value.bool_result);
+      status = mraa_gpio_write (gpio_dev, readings[--nvalues].value.bool_result);
     }
     else
     {
@@ -308,7 +301,7 @@ static bool rpi_puthandler
   return (status == MRAA_SUCCESS);
  }
 
-static bool rpi_disconnect (void *impl, edgex_addressable *device)
+static bool rpi_disconnect (void *impl, edgex_protocols *device)
 {
   free (impl);
   return true;
@@ -356,16 +349,64 @@ static void rpi_stop (void *impl, bool force)
   pthread_mutex_destroy (&impln->mutex);
 }
 
+static void usage (void)
+{
+  printf ("Options: \n");
+  printf ("   -h, --help           : Show this text\n");
+  printf ("   -n, --name=<name>    : Set the device service name\n");
+  printf ("   -r, --registry=<url> : Use the registry service\n");
+  printf ("   -p, --profile=<name> : Set the profile name\n");
+  printf ("   -c, --confdir=<dir>  : Set the configuration directory\n");
+}
+
+static bool testArg (int argc, char *argv[], int *pos, const char *pshort, const char *plong, char **var)
+{
+  if (strcmp (argv[*pos], pshort) == 0 || strcmp (argv[*pos], plong) == 0)
+  {
+    if (*pos < argc - 1)
+    {
+      (*pos)++;
+      *var = argv[*pos];
+      (*pos)++;
+      return true;
+    }
+    else
+    {
+      printf ("Option %s requires an argument\n", argv[*pos]);
+      exit (0);
+    }
+  }
+  char *eq = strchr (argv[*pos], '=');
+  if (eq)
+  {
+    if (strncmp (argv[*pos], pshort, eq - argv[*pos]) == 0 || strncmp (argv[*pos], plong, eq - argv[*pos]) == 0)
+    {
+      if (strlen (++eq))
+      {
+        *var = eq;
+        (*pos)++;
+        return true;
+      }
+      else
+      {
+        printf ("Option %s requires an argument\n", argv[*pos]);
+        exit (0);
+      }
+    }
+  }
+  return false;
+}
+
 int main (int argc, char *argv[])
 {
-  const char *profile = "";
+  char *profile = "";
   char *confdir = "";
+  char *svcname = "device-rpi";
+  char *regURL = getenv ("EDGEX_REGISTRY");
   edgex_error err;
-  bool useRegistry = false;
 
-  rpi_pidriver_t *implObject = malloc (sizeof (rpi_pidriver_t));
+  rpi_pidriver_t * implObject = malloc (sizeof (rpi_pidriver_t));
   memset (implObject, 0, sizeof (rpi_pidriver_t));
-  implObject->lc = iot_log_default;
 
   int n = 1;
   while (n < argc)
@@ -375,22 +416,20 @@ int main (int argc, char *argv[])
       usage ();
       return 0;
     }
-    if (strcmp (argv[n], "-r") == 0 || strcmp (argv[n], "--registry") == 0)
+    if (testArg (argc, argv, &n, "-r", "--registry", &regURL))
     {
-      useRegistry = true;
-      n++;
       continue;
     }
-    if (strcmp (argv[n], "-p") == 0 || strcmp (argv[n], "--profile") == 0)
+    if (testArg (argc, argv, &n, "-n", "--name", &svcname))
     {
-      profile = argv[n + 1];
-      n += 2;
       continue;
     }
-    if (strcmp (argv[n], "-c") == 0 || strcmp (argv[n], "--confdir") == 0)
+    if (testArg (argc, argv, &n, "-p", "--profile", &profile))
     {
-      confdir = argv[n + 1];
-      n = n + 2;
+      continue;
+    }
+    if (testArg (argc, argv, &n, "-c", "--confdir", &confdir))
+    {
       continue;
     }
 
@@ -415,7 +454,7 @@ int main (int argc, char *argv[])
   RPI_ERR_CHECK (err);
 
   implObject->svc = rpi_service;
-  edgex_device_service_start (rpi_service, useRegistry, NULL, 0, profile, confdir, &err);
+  edgex_device_service_start (rpi_service, regURL, profile, confdir, &err);
   RPI_ERR_CHECK (err);
 
   printf ("\nRunning - press ctrl-c to exit\n");
