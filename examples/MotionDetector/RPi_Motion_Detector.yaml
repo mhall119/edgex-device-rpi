@@ -35,7 +35,7 @@ deviceResources:
     units:
       { type: "String", readWrite: "R", defaultValue: " " }
 
-resources:
+deviceCommands:
 - name: Set_Green_Led
   set:
   - { operation: "set", object: "Green_LED", property: "value", parameter: "Green_LED" }
@@ -48,7 +48,7 @@ resources:
   get:
   - { operation: "get", object: "MotionState", property: "value", parameter: "MotionState" }
 
-commands:
+coreCommands:
 - name: Set_Green_Led
   put:
     path: "/api/v1/device/{deviceId}/Set_Green_Led"

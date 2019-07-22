@@ -155,7 +155,7 @@
         "id": "7c6a217.7b196e",
         "type": "ui_tab",
         "z": "",
-        "name": "Device RPi Examples",
+        "name": "EdgeX Device RPi Examples",
         "icon": "dashboard"
     }
 ]
