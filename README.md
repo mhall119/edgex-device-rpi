@@ -13,7 +13,15 @@ Raspberry PI 3+
 You will also need some build tools to compile and run the Device RaspberryPi service.
 On Rasbian or Ubuntu, these can be installed with:
 ```
-sudo apt install git cmake curl g++ libcurl4-openssl-dev libmicrohttpd-dev libyaml-dev
+sudo apt install git cmake curl g++ libcurl4-openssl-dev libmicrohttpd-dev libyaml-dev uuid-dev
+```
+
+You will also need `libcbor-dev`, which is not available in the latest stable Raspbian release. You can manually download and install it with:
+```
+wget http://ftp.us.debian.org/debian/pool/main/libc/libcbor/libcbor0_0.5.0+dfsg-2_armhf.deb
+sudo dpkg -i libcbor0_0.5.0+dfsg-2_armhf.deb
+wget http://ftp.us.debian.org/debian/pool/main/libc/libcbor/libcbor-dev_0.5.0+dfsg-2_armhf.deb
+sudo dpkg -i libcbor-dev_0.5.0+dfsg-2_armhf.deb
 ```
 
 ## Build Instruction:
@@ -37,7 +45,7 @@ This command will download and build both the `libmraa` and `device-c-sdk` libra
 
 You can then run the device service using one of the example configurations in the [./examples/](./examples/) folder with:
 ```
-./build/release/device-rpi --confdir ./examples/<ExampleProject>
+./build/release/device-rpi --registry <url-of-edgex-services> --confdir ./examples/<ExampleProject>
 ```
 
 Be sure to read and follow the setup instructions for the example project before running `device-rpi`. See the [Example Projects](#example-projects) below for more.

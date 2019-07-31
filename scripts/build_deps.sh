@@ -28,9 +28,9 @@ then
 
 # get c-sdk from edgexfoundry
   cd $ROOT/deps
-  wget https://github.com/edgexfoundry/device-sdk-c/archive/1.0.0.tar.gz
-  tar -xzf 1.0.0.tar.gz
-  cd device-sdk-c-1.0.0
+  wget https://github.com/edgexfoundry/device-sdk-c/archive/v1.0.1.tar.gz
+  tar -xzf v1.0.1.tar.gz
+  cd device-sdk-c-1.0.1
   ./scripts/build.sh
   cp -rf include/* /usr/include/
   cp build/release/c/libcsdk.so /usr/lib/
