@@ -1,6 +1,7 @@
 #!/bin/sh
 set -e -x
 
+EDGEX_VERSION=1.0.2
 # Dependencies
 if [ ! -d deps ]
 then
@@ -28,9 +29,9 @@ then
 
 # get c-sdk from edgexfoundry
   cd $ROOT/deps
-  wget https://github.com/edgexfoundry/device-sdk-c/archive/v1.0.1.tar.gz
-  tar -xzf v1.0.1.tar.gz
-  cd device-sdk-c-1.0.1
+  wget https://github.com/edgexfoundry/device-sdk-c/archive/v${EDGEX_VERSION}.tar.gz
+  tar -xzf v${EDGEX_VERSION}.tar.gz
+  cd device-sdk-c-${EDGEX_VERSION}
   ./scripts/build.sh
   cp -rf include/* /usr/include/
   cp build/release/c/libcsdk.so /usr/lib/
