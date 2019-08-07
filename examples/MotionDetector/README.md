@@ -65,22 +65,7 @@ A Node-Red flow is provided for this example, you will need to load it into your
 ![Import from Clipboard](nodered_clipboard.png)
 ![Import Flow](nodered_import.png)
 
-Because an EdgeX Device Command has a unique generated URL, you will need to update your Node-Red flow with the correct URL from your EdgeX instance.
-
-3. Open http://localhost:48082/api/v1/device/name/RPiMotionDetector on the machine running your EdgeX services (or replace `localhost` with that machine's IP address)
-
-4. Find the `url` property for `Set_Green_Led`, it will look something like this:
-```
-http://edgex-core-command:48082/api/v1/device/5ca248279f8fc20001bdc03c/command/5ca248269f8fc20001bdc038
-```
-
-5. Copy that URL into the URL field for the `Set Green LED` node in your Node-Red flow:
-
-![Update Command URL](nodered_commands.png)
-
-6. Repeat steps 4 and 5 for `Set_Red_Led` and the `Set Red LED` node.
-
-7. Click the `Deploy` button at the top of your Node-Red screen to start your flow
+3. Click the `Deploy` button at the top of your Node-Red screen to start your flow
 
 
 ### Export device service readings to Node-Red

@@ -45,7 +45,7 @@ This command will download and build both the `libmraa` and `device-c-sdk` libra
 
 You can then run the device service using one of the example configurations in the [./examples/](./examples/) folder with:
 ```
-./build/release/device-rpi --registry <url-of-edgex-services> --confdir ./examples/<ExampleProject>
+./build/release/device-rpi --confdir ./examples/<ExampleProject>
 ```
 
 Be sure to read and follow the setup instructions for the example project before running `device-rpi`. See the [Example Projects](#example-projects) below for more.
