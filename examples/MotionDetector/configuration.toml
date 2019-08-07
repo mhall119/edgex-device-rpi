@@ -1,5 +1,5 @@
 [Service]
-  Host = "192.168.86.143"
+  Host = "192.168.86.21"
   Port = 49991
   ConnectRetries = 3
   HealthCheck = ""
@@ -40,6 +40,6 @@
   [DeviceList.Protocols.GPIO]
     Address = "GPIO"
   [[DeviceList.AutoEvents]]
+    Frequency="1s"
+    OnChange = false
     Resource = "Get_MotionState"
-    OnChange = true
-    Frequency = "2s"
