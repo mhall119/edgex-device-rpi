@@ -15,7 +15,9 @@
 #include <mraa/gpio.h>
 #include <mraa/aio.h>
 #include <mraa/i2c.h>
+#include "edgex/edgex.h"
 #include "edgex/devsdk.h"
+#include "edgex/device-mgmt.h"
 
 #if defined (__cplusplus)
 extern "C" {
@@ -68,7 +70,7 @@ typedef struct
 
 typedef struct
 {
-  iot_logging_client *lc;
+  iot_logger_t *lc;
   edgex_device_service *svc;
   rpi_dev_ctxt_t *dev[RPI_NO_PORTS];
   pthread_mutex_t mutex;

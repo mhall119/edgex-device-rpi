@@ -59,21 +59,7 @@ A Node-Red flow is provided for this example, you will need to load it into your
 ![Import from Clipboard](nodered_clipboard.png)
 ![Import Flow](nodered_import.png)
 
-Because an EdgeX Device Command has a unique generated URL, you will need to update your Node-Red flow with the correct URL from your EdgeX instance.
-
-3. Open http://localhost:48082/api/v1/device/name/RPiBlinkLed on the machine running your EdgeX services (or replace `localhost` with that machine's IP address)
-
-4. Find the `url` property for `Set_Led`, it will look something like this:
-```
-http://edgex-core-command:48082/api/v1/device/5ca248279f8fc20001bdc03c/command/5ca248269f8fc20001bdc038
-```
-
-5. Copy that URL into the URL field for the `Set LED` node in your Node-Red flow:
-
-![Update Command URL](nodered_commands.png)
-
-6. Click the `Deploy` button at the top of your Node-Red screen to start your flow
-
+3. Click the `Deploy` button at the top of your Node-Red screen to start your flow
 
 ## Testing
 

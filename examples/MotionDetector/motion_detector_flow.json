@@ -2,7 +2,7 @@
     {
         "id": "9b837477.57dac8",
         "type": "tab",
-        "label": "Motion Detector Example",
+        "label": "EdgeX RPi Motion Example",
         "disabled": false,
         "info": ""
     },
@@ -173,7 +173,7 @@
         "name": "Set Green LED",
         "method": "PUT",
         "ret": "txt",
-        "url": "http://edgex-core-command:48082/api/v1/device/5c9e91a09f8fc20001c8570e/command/5c9e91a09f8fc20001c85709",
+        "url": "http://edgex-core-command:48082/api/v1/device/name/RPiMotionDetector/command/Set_Green_Led",
         "tls": "",
         "x": 1200,
         "y": 400,
@@ -251,7 +251,7 @@
         "name": "Set Red LED",
         "method": "PUT",
         "ret": "txt",
-        "url": "http://edgex-core-command:48082/api/v1/device/5c9e91a09f8fc20001c8570e/command/5c9e91a09f8fc20001c8570a",
+        "url": "http://edgex-core-command:48082/api/v1/device/name/RPiMotionDetector/command/Set_Red_Led",
         "tls": "",
         "x": 990,
         "y": 760,
@@ -393,7 +393,7 @@
         "id": "97829435.202208",
         "type": "ui_tab",
         "z": "",
-        "name": "EdgeX Raspberry Pi Device",
+        "name": "EdgeX Device RPi Examples",
         "icon": "dashboard",
         "order": 1
     }

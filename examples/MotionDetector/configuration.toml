@@ -1,5 +1,5 @@
 [Service]
-  Host = "192.168.1.145"
+  Host = "192.168.86.21"
   Port = 49991
   ConnectRetries = 3
   HealthCheck = ""
@@ -9,11 +9,11 @@
 
 [Clients]
   [Clients.Data]
-    Host = "192.168.1.130"
+    Host = "192.168.86.32"
     Port = 48080
 
   [Clients.Metadata]
-    Host = "192.168.1.130"
+    Host = "192.168.86.32"
     Port = 48081
 
 [Device]
@@ -32,21 +32,14 @@
   RemoteURL = ""
   File = "-"
 
-[[Schedules]]
-  Name = "Schedule_Motion"
-  Frequency = "PT2S"
-
-[[ScheduleEvents]]
-  Name = "MotionStateMeasurements"
-  Schedule = "Schedule_Motion"
-  Path = "/api/v1/device/all/Get_MotionState"
-
-
 [[DeviceList]]
   Name = "RPiMotionDetector"
   Profile = "RPi_Motion_Detector"
   Description = "Motion detector using RPi's GPIO pins and a PIR sensor"
   Labels = [ "RPi Example" ]
-  [DeviceList.Addressable]
-    Address = "/api/v1/device/RPiMotionDevice"
-
+  [DeviceList.Protocols.GPIO]
+    Address = "GPIO"
+  [[DeviceList.AutoEvents]]
+    Frequency="1s"
+    OnChange = false
+    Resource = "Get_MotionState"
